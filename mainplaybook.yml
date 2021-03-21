@@ -1,8 +1,11 @@
 ---
 # Keep Apps playbooks below
-- import_playbook : playbooks/firefox.yml
-- import_playbook : playbooks/postman.yml
 - import_playbook : playbooks/google_chrome.yml
-- import_playbook : playbooks/slack.yml
 - import_playbook : playbooks/visual_studio_code.yml
+- import_playbook : playbooks/docker.yml
+- import_playbook : playbooks/wireshark.yml
+- import_playbook : playbooks/mas.yml # app store 로그인 필요
+- import_playbook : playbooks/iterm.yml
+- import_playbook : playbooks/zsh.yml
 # Keep Apps playbooks above
+

@@ -1,0 +1,13 @@
+---
+- hosts: local
+  become: yes
+  vars:
+    app_name: Wireshark
+    app_url: https://2.na.dl.wireshark.org/osx/Wireshark%203.4.3%20Intel%2064.dmg
+    installer_type: app
+    install_method: dmg
+    download_file_type: dmg
+  roles:
+    - setup
+    - installer
+    - cleanup

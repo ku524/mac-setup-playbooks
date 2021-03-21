@@ -1,0 +1,99 @@
+---
+- 
+  name: install - zsh
+  community.general.homebrew:
+    name: zsh
+    state: present
+    update_homebrew: yes
+- 
+  name: install - curl
+  community.general.homebrew:
+    name: curl
+    state: present
+- 
+  name: change default shell to zsh
+  ansible.builtin.command: chsh -s $(which zsh)
+  become: yes
+- 
+  name: install oh-my-zsh
+  ansible.builtin.command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  become: yes
+- 
+  name: install zsh plugin - zsh-syntax-highlighting
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+- 
+  name: install zsh plugin - zsh-autosuggestions
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-autosuggestions'
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+- 
+  name: install - lsd
+  community.general.homebrew:
+    name: lsd
+    state: present
+    update_homebrew: yes
+- 
+  name: install - autojump
+  community.general.homebrew:
+    name: autojump
+    state: present
+    update_homebrew: yes
+- 
+  name: configure zsh theme - agnoster
+  ansible.builtin.lineinfile:
+    path: ~/.zshrc
+    regexp: '^ZSH_THEME='
+    line: ZSH_THEME="agnoster"
+    create: yes
+- 
+  name: configure zsh plugins - git autojump zsh-autosuggestions zsh-syntax-highlighting
+  ansible.builtin.lineinfile:
+    path: ~/.zshrc
+    regexp: '^plugins='
+    line: |
+      plugins=(git autojump zsh-autosuggestions zsh-syntax-highlighting)      
+    create: yes
+- 
+  name: configure studio code alias
+  ansible.builtin.lineinfile:
+    path: ~/.zshrc
+    regexp: '^code ()'
+    line: code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+    create: yes
+- 
+  name: configure alias - kubectl
+  ansible.builtin.lineinfile:
+    path: ~/.zshrc
+    regexp: 'alias k='
+    line: alias k="kubectl"
+    create: yes
+- 
+  name: configure alias - terraform
+  ansible.builtin.lineinfile:
+    path: ~/.zshrc
+    regexp: 'alias t='
+    line: alias t="terraform"
+    create: yes
+- 
+  name: configure alias - ls
+  ansible.builtin.lineinfile:
+    path: ~/.zshrc
+    regexp: 'alias ls='
+    line: alias ls="lsd --no-symlink"
+    create: yes
+- 
+  name: configure alias - ll
+  ansible.builtin.lineinfile:
+    path: ~/.zshrc
+    regexp: 'alias ll='
+    line: alias ll="lsd -l --no-symlink"
+    create: yes
+- 
+  name: configure alias - lt
+  ansible.builtin.lineinfile:
+    path: ~/.zshrc
+    regexp: 'alias lt='
+    line: alias lt="lsd --tree --no-symlink"
+    create: yes

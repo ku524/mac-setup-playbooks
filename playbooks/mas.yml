@@ -1,0 +1,15 @@
+---
+- 
+  name: install - mas
+  community.general.homebrew:
+    name: mas
+    state: present
+    update_homebrew: yes
+    
+- name: Install a list of apps
+  community.general.mas:
+    id:
+      - 803453959 # Slack
+      - 823766827 # One drive
+      - 869223134 # kakao talk
+    state: present
