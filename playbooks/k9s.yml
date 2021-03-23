@@ -1,0 +1,7 @@
+---
+- 
+  name: install - k9s
+  community.general.homebrew:
+    name: k9s
+    state: present
+    update_homebrew: yes

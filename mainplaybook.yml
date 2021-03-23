@@ -7,5 +7,6 @@
 - import_playbook : playbooks/mas.yml # app store 로그인 필요
 - import_playbook : playbooks/iterm.yml
 - import_playbook : playbooks/zsh.yml
+- import_playbook : playbooks/k9s.yml
 # Keep Apps playbooks above
 
