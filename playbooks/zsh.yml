@@ -103,7 +103,6 @@
     block: |
       code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
       alias k="kubectl"
-      alias t="terraform"
       alias ls="lsd --no-symlink"
       alias ll="lsd -l --no-symlink"
       alias lt="lsd --tree --no-symlink"

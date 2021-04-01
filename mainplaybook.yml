@@ -1,6 +1,7 @@
 ---
 # Keep Apps playbooks below
 - import_playbook : playbooks/google_chrome.yml
+- import_playbook : playbooks/postman.yml
 - import_playbook : playbooks/visual_studio_code.yml
 - import_playbook : playbooks/docker.yml
 - import_playbook : playbooks/wireshark.yml
@@ -8,5 +9,5 @@
 - import_playbook : playbooks/iterm.yml
 - import_playbook : playbooks/zsh.yml
 - import_playbook : playbooks/k9s.yml
+- import_playbook : playbooks/git.yml
 # Keep Apps playbooks above
-

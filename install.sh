@@ -8,6 +8,6 @@ sudo pip install awscli
 
 ansible-galaxy collection install community.general
 
-sudo ansible-playbook main_playbook.yaml
+sudo ansible-playbook main_playbook.yaml -i inventory
 
 
