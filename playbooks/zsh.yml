@@ -35,11 +35,52 @@
     state: present
     update_homebrew: yes
 - 
+  name: install - bat
+  community.general.homebrew:
+    name: bat
+    state: present
+    update_homebrew: yes
+- 
   name: install - autojump
   community.general.homebrew:
     name: autojump
     state: present
     update_homebrew: yes
+- 
+  name: install - fd
+  community.general.homebrew:
+    name: fd
+    state: present
+    update_homebrew: yes
+- 
+  name: install - fzf
+  community.general.homebrew:
+    name: fzf
+    state: present
+    update_homebrew: yes
+- 
+  name: install - pet
+  community.general.homebrew:
+    name: knqyf263/pet/pet
+    state: present
+    update_homebrew: yes
+- 
+  name: configure pet in zshrc
+  blockinfile:
+    path: ~/.zshrc
+    block: |
+      function prev() {
+        PREV=$(fc -lrn | head -n 1)
+        sh -c "pet new `printf %q "$PREV"`"
+      }
+      function pet-select() {
+        BUFFER=$(pet search --query "$LBUFFER")
+        CURSOR=$#BUFFER
+        zle redisplay
+      }
+      zle -N pet-select
+      stty -ixon
+      bindkey '^s' pet-select
 - 
   name: configure zsh theme - agnoster
   ansible.builtin.lineinfile:
@@ -48,52 +89,25 @@
     line: ZSH_THEME="agnoster"
     create: yes
 - 
-  name: configure zsh plugins - git autojump zsh-autosuggestions zsh-syntax-highlighting
+  name: configure zsh plugins - git autojump zsh-autosuggestions zsh-syntax-highlighting fzf
   ansible.builtin.lineinfile:
     path: ~/.zshrc
     regexp: '^plugins='
     line: |
-      plugins=(git autojump zsh-autosuggestions zsh-syntax-highlighting)      
-    create: yes
+      plugins=(git autojump zsh-autosuggestions zsh-syntax-highlighting fzf)      
+    create: 
 - 
-  name: configure studio code alias
-  ansible.builtin.lineinfile:
+  name: configure aliases
+  blockinfile:
     path: ~/.zshrc
-    regexp: '^code ()'
-    line: code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
-    create: yes
-- 
-  name: configure alias - kubectl
-  ansible.builtin.lineinfile:
-    path: ~/.zshrc
-    regexp: 'alias k='
-    line: alias k="kubectl"
-    create: yes
-- 
-  name: configure alias - terraform
-  ansible.builtin.lineinfile:
-    path: ~/.zshrc
-    regexp: 'alias t='
-    line: alias t="terraform"
-    create: yes
-- 
-  name: configure alias - ls
-  ansible.builtin.lineinfile:
-    path: ~/.zshrc
-    regexp: 'alias ls='
-    line: alias ls="lsd --no-symlink"
-    create: yes
-- 
-  name: configure alias - ll
-  ansible.builtin.lineinfile:
-    path: ~/.zshrc
-    regexp: 'alias ll='
-    line: alias ll="lsd -l --no-symlink"
-    create: yes
-- 
-  name: configure alias - lt
-  ansible.builtin.lineinfile:
-    path: ~/.zshrc
-    regexp: 'alias lt='
-    line: alias lt="lsd --tree --no-symlink"
-    create: yes
+    block: |
+      code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+      alias k="kubectl"
+      alias t="terraform"
+      alias ls="lsd --no-symlink"
+      alias ll="lsd -l --no-symlink"
+      alias lt="lsd --tree --no-symlink"
+      alias cat="bat"
+      alias gs="git status"
+      export FZF_DEFAULT_COMMAND=’fd — type f’
+      export MANPAGER="sh -c 'col -bx | bat -l man -p'"
