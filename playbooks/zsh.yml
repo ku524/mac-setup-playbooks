@@ -7,18 +7,14 @@
       state: present
       update_homebrew: yes
   - 
-    name: install - curl
-    community.general.homebrew:
-      name: curl
-      state: present
-  - 
     name: change default shell to zsh
-    ansible.builtin.command: chsh -s $(which zsh)
     become: yes
-  - 
+    user:
+      name: "{{ ansible_env.USER }}"
+      shell: /usr/local/bin/zsh
+  -
     name: install oh-my-zsh
-    ansible.builtin.command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-    become: yes
+    shell: curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | bash -
   - 
     name: install zsh plugin - zsh-syntax-highlighting
     ansible.builtin.git:

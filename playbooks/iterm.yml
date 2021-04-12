@@ -2,7 +2,7 @@
 - hosts: local
   become: yes
   vars:
-    app_name: iterm2
+    app_name: iTerm
     app_url: https://iterm2.com/downloads/stable/iTerm2-3_4_4.zip
     installer_type: app
     install_method: dmg
