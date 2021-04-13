@@ -5,9 +5,6 @@
 - import_playbook : playbooks/visual_studio_code.yml
 - import_playbook : playbooks/docker.yml
 - import_playbook : playbooks/wireshark.yml
-- import_playbook : playbooks/mas.yml # app store 로그인 필요
 - import_playbook : playbooks/iterm.yml
-- import_playbook : playbooks/zsh.yml
-- import_playbook : playbooks/k9s.yml
-- import_playbook : playbooks/git.yml
+- import_playbook : playbooks/chsh.yml
 # Keep Apps playbooks above
