@@ -1,0 +1,8 @@
+- hosts: localhost
+  tasks:
+  - 
+    name: change default shell to zsh
+    become: yes
+    user:
+      name: "{{ ansible_env.USER }}"
+      shell: /usr/local/bin/zsh

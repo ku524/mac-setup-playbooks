@@ -1,0 +1,4 @@
+---
+# Keep Apps playbooks below
+- import_playbook : playbooks/chsh.yml
+# Keep Apps playbooks above

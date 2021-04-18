@@ -1,0 +1,126 @@
+- hosts: localhost
+  tasks:
+  - 
+    name: install - zsh
+    apt:
+      name: zsh
+      state: present
+      update_cache: yes
+  -
+    name: install oh-my-zsh
+    shell: sh -c $(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)
+  - 
+    name: install zsh plugin - zsh-syntax-highlighting
+    ansible.builtin.git:
+      repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+      dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  - 
+    name: install zsh plugin - zsh-autosuggestions
+    ansible.builtin.git:
+      repo: 'https://github.com/zsh-users/zsh-autosuggestions'
+      dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  - 
+    name: install - lsd
+    community.general.homebrew:
+      name: lsd
+      state: present
+      update_homebrew: yes
+  - 
+    name: install - bat
+    community.general.homebrew:
+      name: bat
+      state: present
+  - 
+    name: install - autojump
+    community.general.homebrew:
+      name: autojump
+      state: present
+  - 
+    name: install - fd
+    community.general.homebrew:
+      name: fd
+      state: present
+  - 
+    name: install - fzf
+    community.general.homebrew:
+      name: fzf
+      state: present
+  - 
+    name: install - pet
+    community.general.homebrew:
+      name: knqyf263/pet/pet
+      state: present
+  - 
+    name: configure pet in zshrc
+    blockinfile:
+      path: ~/.zshrc
+      marker_begin: PET BEGIN
+      marker_end: PET END
+      block: |
+        function prev() {
+          PREV=$(fc -lrn | head -n 1)
+          sh -c "pet new `printf %q "$PREV"`"
+        }
+        function pet-select() {
+          BUFFER=$(pet search --query "$LBUFFER")
+          CURSOR=$#BUFFER
+          zle redisplay
+        }
+        zle -N pet-select
+        stty -ixon
+        bindkey '^s' pet-select
+      create: yes
+  - 
+    name: configure pet sync - PAT
+    ansible.builtin.lineinfile:
+      path: ~/.config/pet/config.toml
+      firstmatch: yes
+      regexp: '^  access_token = '
+      line: "  access_token = \"{{ pet_PAT }}\""
+      create: yes
+  - 
+    name: configure pet sync - gist_id
+    ansible.builtin.lineinfile:
+      path: ~/.config/pet/config.toml
+      firstmatch: yes
+      regexp: '^  gist_id = '
+      line: "  gist_id = \"{{ pet_gist_id }}\""
+      create: yes
+  - 
+    name: configure pet sync - auto_sync
+    ansible.builtin.lineinfile:
+      path: ~/.config/pet/config.toml
+      firstmatch: yes
+      regexp: '^  auto_sync = '
+      line: "  auto_sync = true"
+      create: yes
+  - 
+    name: configure zsh theme - agnoster
+    ansible.builtin.lineinfile:
+      path: ~/.zshrc
+      regexp: '^ZSH_THEME='
+      line: ZSH_THEME="agnoster"
+      create: yes
+  - 
+    name: configure zsh plugins - git autojump zsh-autosuggestions zsh-syntax-highlighting fzf
+    ansible.builtin.lineinfile:
+      path: ~/.zshrc
+      regexp: '^plugins='
+      line: |
+        plugins=(git autojump zsh-autosuggestions zsh-syntax-highlighting fzf)      
+      create: 
+  - 
+    name: configure aliases
+    blockinfile:
+      path: ~/.zshrc
+      block: |
+        code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+        alias k="kubectl"
+        alias ls="lsd --no-symlink"
+        alias ll="lsd -l --no-symlink"
+        alias lt="lsd --tree --no-symlink"
+        alias cat="bat"
+        alias gs="git status"
+        alias a="aws-vault"
+        export FZF_DEFAULT_COMMAND='fd - type f'
+        export MANPAGER="sh -c 'col -bx | bat -l man -p'"
