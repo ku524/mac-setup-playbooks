@@ -1,4 +1,3 @@
----
-# Keep Apps playbooks below
-- import_playbook : playbooks/chsh.yml
-# Keep Apps playbooks above
+- import_playbook : playbooks/zsh.yml
+- import_playbook : playbooks/k9s.yml
+- import_playbook : playbooks/git.yml

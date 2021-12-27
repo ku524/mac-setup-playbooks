@@ -1,14 +1,6 @@
 - hosts: localhost
   tasks:
   - 
-    name: install - zsh
-    apt:
-      name: zsh
-      state: present
-  -
-    name: install oh-my-zsh
-    shell: sh -c $(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)
-  - 
     name: install zsh plugin - zsh-syntax-highlighting
     ansible.builtin.git:
       repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
@@ -41,108 +33,101 @@
   - 
     name: install zsh plugin - zsh-aws-vault
     ansible.builtin.git:
-      repo: 'git@github.com:blimmer/zsh-aws-vault.git'
+      repo: 'https://github.com/blimmer/zsh-aws-vault.git'
       dest: ~/.oh-my-zsh/custom/plugins/zsh-aws-vault
-  - 
-    name: install - has
-    community.general.homebrew:
-      name: kdabir/tap/has
-      state: absent
-      update_homebrew: yes
   - 
     name: install - lsd
     community.general.homebrew:
       name: lsd
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: install - bat
     community.general.homebrew:
       name: bat
-      state: present
-  - 
-    name: install - autojump
-    apt:
-      name: autojump
-      state: present
-  - 
-    name: install - fd
-    apt:
-      name: fd-find
-      state: present
-  - 
-    name: install - fzf
-    apt:
-      name: fzf
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
   - 
     name: install - gping
     community.general.homebrew:
-      name: gping
+      name: orf/brew/gping
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: install - curlie
     community.general.homebrew:
       name: rs/tap/curlie
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: install - less
     community.general.homebrew:
       name: less
+      path: /home/linuxbrew/.linuxbrew/bin
       state: latest
       update_homebrew: yes
   - 
     name: install - delta
     community.general.homebrew:
       name: git-delta
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: install - dust
     community.general.homebrew:
       name: dust
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: install - duf
     community.general.homebrew:
       name: duf
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: install - broot
     community.general.homebrew:
       name: broot
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: tab - mcfly
     community.general.homebrew_tap:
       name: cantino/mcfly
+      path: /home/linuxbrew/.linuxbrew/bin
   - 
     name: install - mcfly
     community.general.homebrew:
       name: mcfly
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: install - zoxide
     community.general.homebrew:
       name: zoxide
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: install - dog
     community.general.homebrew:
       name: dog
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   - 
     name: install - xh
     community.general.homebrew:
       name: xh
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes
   -
@@ -156,11 +141,6 @@
       url: http://git.io/forgit
       dest: ~/.config/ansible_setup/forgit
       mode: u=rw,g=r,o=r
-  - 
-    name: install - pet
-    apt:
-      deb: https://github.com/knqyf263/pet/releases/download/v0.3.6/pet_0.3.6_linux_amd64.deb
-    become: yes
   - 
     name: configure pet in zshrc
     blockinfile:
@@ -224,6 +204,7 @@
     name: configure git
     blockinfile:
       path: ~/.gitconfig
+      create: yes
       block: |
         [pager]
             diff = delta

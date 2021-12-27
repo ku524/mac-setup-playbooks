@@ -5,5 +5,6 @@
     name: install - k9s
     community.general.homebrew:
       name: k9s
+      path: /home/linuxbrew/.linuxbrew/bin
       state: present
       update_homebrew: yes

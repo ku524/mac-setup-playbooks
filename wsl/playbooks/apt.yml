@@ -1,0 +1,22 @@
+- hosts: localhost
+  tasks:
+  - 
+    name: install - pet
+    apt:
+      deb: https://github.com/knqyf263/pet/releases/download/v0.3.6/pet_0.3.6_linux_amd64.deb
+    become: yes
+  - 
+    name: install - autojump
+    apt:
+      name: autojump
+      state: present
+  - 
+    name: install - fd
+    apt:
+      name: fd-find
+      state: present
+  - 
+    name: install - fzf
+    apt:
+      name: fzf
+      state: present

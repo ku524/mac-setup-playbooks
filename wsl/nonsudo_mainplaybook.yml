@@ -1,3 +1,0 @@
-- import_playbook : playbooks/zsh.yml
-- import_playbook : playbooks/k9s.yml
-- import_playbook : playbooks/git.yml
