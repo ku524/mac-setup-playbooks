@@ -1,0 +1,26 @@
+code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+alias k="kubectl"
+alias ls="lsd --no-symlink"
+alias ll="lsd -l --no-symlink"
+alias lt="lsd --tree --no-symlink"
+alias cat="bat"
+alias gs="git status"
+alias du="dust"
+alias df="duf"
+alias ping="gping"
+alias curl="curlie"
+alias a="aws-vault"
+alias top="htop"
+alias master="git checkout master"
+alias main="git checkout main"
+alias t="terraform"
+alias ti="terraform init"
+alias tp="terraform plan"
+alias ta="terraform apply"
+export FZF_DEFAULT_COMMAND='fd - type f'
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MCFLY_RESULTS=15
+export MCFLY_FUZZY=true
+eval "$(mcfly init zsh)"
+eval "$(zoxide init zsh --cmd z)"
+source ~/.config/ansible_setup/forgit

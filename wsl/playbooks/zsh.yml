@@ -19,6 +19,37 @@
       repo: 'https://github.com/zsh-users/zsh-autosuggestions'
       dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
   - 
+    name: install zsh plugin - git-open
+    ansible.builtin.git:
+      repo: 'https://github.com/paulirish/git-open.git'
+      dest: ~/.oh-my-zsh/custom/plugins/git-open
+  - 
+    name: install zsh plugin - ugit
+    ansible.builtin.git:
+      repo: 'https://github.com/Bhupesh-V/ugit.git'
+      dest: ~/.oh-my-zsh/custom/plugins/ugit
+  - 
+    name: install zsh plugin - you should use
+    ansible.builtin.git:
+      repo: 'https://github.com/MichaelAquilina/zsh-you-should-use.git'
+      dest: ~/.oh-my-zsh/custom/plugins/you-should-use
+  - 
+    name: install zsh plugin - fzf-tab
+    ansible.builtin.git:
+      repo: 'https://github.com/Aloxaf/fzf-tab'
+      dest: ~/.oh-my-zsh/custom/plugins/fzf-tab
+  - 
+    name: install zsh plugin - zsh-aws-vault
+    ansible.builtin.git:
+      repo: 'git@github.com:blimmer/zsh-aws-vault.git'
+      dest: ~/.oh-my-zsh/custom/plugins/zsh-aws-vault
+  - 
+    name: install - has
+    community.general.homebrew:
+      name: kdabir/tap/has
+      state: absent
+      update_homebrew: yes
+  - 
     name: install - lsd
     community.general.homebrew:
       name: lsd
@@ -44,6 +75,87 @@
     apt:
       name: fzf
       state: present
+  - 
+    name: install - gping
+    community.general.homebrew:
+      name: gping
+      state: present
+      update_homebrew: yes
+  - 
+    name: install - curlie
+    community.general.homebrew:
+      name: rs/tap/curlie
+      state: present
+      update_homebrew: yes
+  - 
+    name: install - less
+    community.general.homebrew:
+      name: less
+      state: latest
+      update_homebrew: yes
+  - 
+    name: install - delta
+    community.general.homebrew:
+      name: git-delta
+      state: present
+      update_homebrew: yes
+  - 
+    name: install - dust
+    community.general.homebrew:
+      name: dust
+      state: present
+      update_homebrew: yes
+  - 
+    name: install - duf
+    community.general.homebrew:
+      name: duf
+      state: present
+      update_homebrew: yes
+  - 
+    name: install - broot
+    community.general.homebrew:
+      name: broot
+      state: present
+      update_homebrew: yes
+  - 
+    name: tab - mcfly
+    community.general.homebrew_tap:
+      name: cantino/mcfly
+  - 
+    name: install - mcfly
+    community.general.homebrew:
+      name: mcfly
+      state: present
+      update_homebrew: yes
+  - 
+    name: install - zoxide
+    community.general.homebrew:
+      name: zoxide
+      state: present
+      update_homebrew: yes
+  - 
+    name: install - dog
+    community.general.homebrew:
+      name: dog
+      state: present
+      update_homebrew: yes
+  - 
+    name: install - xh
+    community.general.homebrew:
+      name: xh
+      state: present
+      update_homebrew: yes
+  -
+    name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: ~/.config/ansible_setup
+      state: directory
+  - 
+    name: install - forgit
+    get_url:
+      url: http://git.io/forgit
+      dest: ~/.config/ansible_setup/forgit
+      mode: u=rw,g=r,o=r
   - 
     name: install - pet
     apt:
@@ -106,20 +218,48 @@
       path: ~/.zshrc
       regexp: '^plugins='
       line: |
-        plugins=(git autojump zsh-autosuggestions zsh-syntax-highlighting fzf)      
+        plugins=(git autojump zsh-autosuggestions zsh-syntax-highlighting fzf git-open ugit you-should-use fzf-tab aws zsh-aws-vault)      
       create: 
+  - 
+    name: configure git
+    blockinfile:
+      path: ~/.gitconfig
+      block: |
+        [pager]
+            diff = delta
+            log = delta
+            reflog = delta
+            show = delta
+
+        [delta]
+            features = side-by-side line-numbers decorations
+            syntax-theme = Dracula
+            plus-style = syntax "#003800"
+            minus-style = syntax "#3f0001"
+
+        [delta "decorations"]
+            commit-decoration-style = bold yellow box ul
+            file-style = bold yellow ul
+            file-decoration-style = none
+            hunk-header-decoration-style = cyan box ul
+
+        [delta "line-numbers"]
+            line-numbers-left-style = cyan
+            line-numbers-right-style = cyan
+            line-numbers-minus-style = 124
+            line-numbers-plus-style = 28
+
+        [interactive]
+            diffFilter = delta --color-only
   - 
     name: configure aliases
     blockinfile:
       path: ~/.zshrc
-      block: |
-        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-        alias k="kubectl"
-        alias ls="lsd --no-symlink"
-        alias ll="lsd -l --no-symlink"
-        alias lt="lsd --tree --no-symlink"
-        alias cat="bat"
-        alias gs="git status"
-        alias a="aws-vault"
-        export FZF_DEFAULT_COMMAND='fd - type f'
-        export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+      block: "{{ lookup('file', '../templates/alias.txt') }}"
+  - 
+    name: configure prompt
+    blockinfile:
+      marker_begin: PROMPT BEGIN
+      marker_end: PROMPT END
+      path: ~/.zshrc
+      block: "{{ lookup('file', '../templates/prompt.txt') }}"
